@@ -1,6 +1,6 @@
 $(function () {
 	var map = new L.Map('map').setView([0, 0], 3);
-
+	var marker;
 	new L.TileLayer(
 	  'http://{s}.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png',
 	  { attribution: 'Map tiles &copy; <a href="http://mapbox.com">MapBox</a>', maxNativeZoom: 19, maxZoom: 21 }
@@ -23,6 +23,7 @@ $(function () {
 		var lat = position.coords.latitude;
 		var lng = position.coords.longitude;
 		map.setView([lat, lng], 17);
+		marker = L.marker([lat, lng]).addTo(map);
 	};
 
 	handleCurrentLocationError = function (err) {
