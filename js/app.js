@@ -2,7 +2,7 @@ $(function () {
 	var map = new L.Map('map',{
 		center: [0, 0],
 		zoom: 3,
-		minZoom: 3
+		minZoom: 3 
 	});
 	var marker;
 	var isUserSelectingByClick = false;
@@ -44,14 +44,30 @@ $(function () {
 		} else {
 			endPosition = event.latlng;
 			map.off('click',getUserSelectedPosition);
+			getPath();
+			startPosition = null;
+			endPosition = null;
+			$("#map").css({
+				cursor: "grab"
+			});
 		}
 	}
+
+	var getPath = function () {
+		$.getJSON('http://160.75.81.195:8080/postgis/postgisdb/ways/pgr_aStarFromAtoB/'+startPosition.lat+'/'+startPosition.lng+'/'+endPosition.lat+'/'+endPosition.lng)
+			.done(function (data) {
+				console.log(data);
+			});
+	};
 
 	$("#searchChoiceButton").on('click', function (event) {
 		$("#pickDestination").modal('hide');
 		if ($("#selectByClick").is(":checked")) {
 			isUserSelectingByClick = true;
 			map.on('click', getUserSelectedPosition);
+			$("#map").css({
+				cursor: "default"
+			});
 		} else {
 
 		}
