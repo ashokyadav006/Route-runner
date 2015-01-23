@@ -8,6 +8,7 @@ $(function () {
 	var isUserSelectingByClick = false;
 	var startPosition;
 	var endPosition;
+	var route;
 
 	new L.TileLayer(
 	  'http://{s}.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png',
@@ -54,9 +55,19 @@ $(function () {
 	}
 
 	var getPath = function () {
-		$.getJSON('http://160.75.81.195:8080/postgis/postgisdb/ways/pgr_aStarFromAtoB/'+startPosition.lat+'/'+startPosition.lng+'/'+endPosition.lat+'/'+endPosition.lng)
+		$.getJSON('http://160.75.81.195:8080/postgis/postgisdb/ways/pgr_aStarFromAtoB/'+startPosition.lng+'/'+startPosition.lat+'/'+endPosition.lng+'/'+endPosition.lat)
 			.done(function (data) {
-				console.log(data);
+				var latlngs = [];
+				var latlng;
+				for (var i = 1; i < data.length; i++) {
+					latlng = new L.latLng(data[i][3], data[i][2]);
+					latlngs.push(latlng);
+					latlng = new L.latLng(data[i][5], data[i][4]);
+					latlngs.push(latlng);
+				}
+
+				route = L.polyline(latlngs, {color: 'red'}).addTo(map);
+				map.fitBounds(route.getBounds());
 			});
 	};
 
