@@ -44,11 +44,11 @@ rr.MapView = Backbone.View.extend({
 
     getRoutePosition: function (event) {
    		if (self.clickCounter === 0) {
-   			self.origin = event.coords;
+   			self.origin = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
    			self.clickCounter++;
    		} else {
    			self.clickCounter = 0;
-   			self.destination = event.coords;
+   			self.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");;
    			map.un('click', self.getRoutePosition);
    			self.drawpath();
    		}
@@ -56,10 +56,11 @@ rr.MapView = Backbone.View.extend({
 
     drawpath: function () {
     	var styleCache = {};
+    	var geoJSONUrl = "http://160.75.81.195:8080/postgis/pgr_aStarFromAtoB_without_SessionID/?long_st="+this.origin[0]+"&lat_st="+this.origin[1]+"&long_end="+this.destination[0]+"&lat_end="+this.destination[1];
     	var geoLayer = new ol.layer.Vector({
     		source: new ol.source.GeoJSON({
     			projection : 'EPSG:3857',
-    			url: './js/myGeoJSON.geojson'
+    			url: geoJSONUrl
     		}),
     		style: function (feature, resolution) {
     			var text = resolution < 5000 ? feature.get('name') : '';
@@ -70,7 +71,7 @@ rr.MapView = Backbone.View.extend({
 						}),
 						stroke : new ol.style.Stroke({
 							color : '#319FD3',
-							width : 1
+							width : 5
 						}),
 						text : new ol.style.Text({
 							font : '12px Calibri,sans-serif',
