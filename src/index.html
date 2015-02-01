@@ -19,13 +19,75 @@
         <![endif]-->
         <div id="map">
         </div>
-        
-
+        <!-- Login/Signup button -->
+        <div class="wrap login-btn-wrap">
+            <a id="loginButton" class="btn login-btn hidden" href="#"></a>
+        </div>
+        <!-- Login/Signup button -->
+        <div class="wrap direction-btn-wrap">
+            <a id="directionBtn" class="btn direction-btn" href="#"></a>
+        </div>
+        <!-- Login/signup modal -->
+        <div class="popupContainer" style="display:none;">
+            <header class="popupHeader">
+                <span class="header_title">Login</span>
+                <span class="modal-close">X</span>
+            </header>
+            <section class="popupBody">
+                <div class="user_register">
+                    <form>
+                        <label class="hidden">Full Name<input type="text"></label><br>
+                        <label>Email Address</label> <input type="email"><br>
+                        <label>Password</label> <input type="password"><br>
+                        <div class="action_btns clearfix">
+                            <div class="right-aligned">
+                                <a class="btn btn_red" href="#">Log in</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- Overlay -->
+        <div id="overlay"></div>
+        <!-- Modal -->
+        <div id="modal"></div>
+        <script type="text/template" id="direction-template">
+            <div class="popupContainer">
+                <header class="popupHeader">
+                    <span class="header_title">Find Direction</span>
+                    <span class="modal-close">X</span>
+                </header>
+                <section class="popupBody">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="selectByClick" value="option1" checked>
+                             Select if you would like to pick places by clicking on the map.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="selectBySearch" value="option2">
+                            Select if you would like to search places by their name
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="action_btns clearfix">
+                        <div class="right-aligned">
+                            <a id="findDirection" class="btn btn-red" href="#">Find</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+      </script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script type="text/javascript" src="js/vendor/ol.js"></script>
         <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
         <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
+        <script type="text/javascript" src="js/model/UserModel.js"></script>
+        <script type="text/javascript" src="js/views/loginView.js"></script>
+        <script type="text/javascript" src="js/views/directionView.js"></script>
         <script type="text/javascript" src="js/views/mapView.js"></script>
         <script src="js/app.js"></script>
     </body>

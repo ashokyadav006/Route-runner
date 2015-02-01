@@ -6,11 +6,15 @@ rr.MapView = Backbone.View.extend({
 
 	initialize: function () {
 		this.render();
+        this.login = new rr.LoginView();
+        this.direction = new rr.DirectionView();
+        this.login.render();
 	},
 
 	render: function () {
 		map = new ol.Map({
 			target: 'map',
+            renderer:'canvas',
 			layers: [
 		      new ol.layer.Tile({
 		      	title: 'Global Imagery',
@@ -26,6 +30,6 @@ rr.MapView = Backbone.View.extend({
 		        collapsible: false
 		      }
 		    })
-		});
-	}
+        });
+    }
 });
