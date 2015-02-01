@@ -4,7 +4,8 @@ rr.DirectionView = Backbone.View.extend({
 
 	el: "div",
 
-	initialize: function () {
+	initialize: function (options) {
+		this.map = options.map;
 		this.template = _.template($('#direction-template').html());
 		$("#directionBtn").on('click', $.proxy(this.render, this));
 	},
@@ -28,5 +29,6 @@ rr.DirectionView = Backbone.View.extend({
 
 	findDRoute: function () {
 		this.onModalClose();
+		this.map.findRouteOnClick();
 	}
 });
