@@ -234,7 +234,27 @@ body {
 .btn-red:hover  {
     background:  #C12B05;
 }
-
+#searchPlaces div {
+    margin: 10px 0;
+}
+.place-search-box {
+    width: 90%;
+    height: 40px;
+    padding: 0 10px 0 10px;
+    background-color: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    color: #aeaeae;
+    font-weight:normal;
+    font-size: 1.5em;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+.autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
+.autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #f0f0f0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
 
 
 /* ==========================================================================

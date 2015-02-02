@@ -14,6 +14,15 @@ rr.MapView = Backbone.View.extend({
         this.login = new rr.LoginView();
         this.direction = new rr.DirectionView({"map": this});
         this.login.render();
+        navigator.geolocation.getCurrentPosition(this.saveCurrentPosition);
+	},
+
+	saveCurrentPosition: function (position) {
+		rr.UserLocation = new rr.LocationModel({
+			name: "My Location",
+			lat: position.coords.latitude,
+			lng: position.coords.longitude
+		});
 	},
 
 	render: function () {
@@ -44,19 +53,26 @@ rr.MapView = Backbone.View.extend({
 
     getRoutePosition: function (event) {
    		if (self.clickCounter === 0) {
-   			self.origin = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
+   			rr.origin = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
    			self.clickCounter++;
    		} else {
    			self.clickCounter = 0;
-   			self.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");;
+   			rr.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");;
    			map.un('click', self.getRoutePosition);
    			self.drawpath();
    		}
     },
 
+    findRouteOnSearch: function () {
+    	if (!rr.origin) {
+    		rr.origin = [rr.UserLocation.get("lng"), rr.UserLocation.get("lat")]
+    	}
+    	this.drawpath();
+    },
+
     drawpath: function () {
     	var styleCache = {};
-    	var geoJSONUrl = "http://160.75.81.195:8080/postgis/pgr_aStarFromAtoB_without_SessionID/?long_st="+this.origin[0]+"&lat_st="+this.origin[1]+"&long_end="+this.destination[0]+"&lat_end="+this.destination[1];
+    	var geoJSONUrl = "http://160.75.81.195:8080/postgis/pgr_aStarFromAtoB_without_SessionID/?long_st="+rr.origin[0]+"&lat_st="+rr.origin[1]+"&long_end="+rr.destination[0]+"&lat_end="+rr.destination[1];
     	var geoLayer = new ol.layer.Vector({
     		source: new ol.source.GeoJSON({
     			projection : 'EPSG:3857',
@@ -72,17 +88,6 @@ rr.MapView = Backbone.View.extend({
 						stroke : new ol.style.Stroke({
 							color : '#319FD3',
 							width : 5
-						}),
-						text : new ol.style.Text({
-							font : '12px Calibri,sans-serif',
-							text : text,
-							fill : new ol.style.Fill({
-								color : '#000'
-							}),
-							stroke : new ol.style.Stroke({
-								color : '#fff',
-								width : 3
-							})
 						}),
 						zIndex : 50
 					})];

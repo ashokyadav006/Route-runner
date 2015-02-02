@@ -61,15 +61,23 @@
                 <section class="popupBody">
                     <div class="radio">
                         <label>
-                            <input type="radio" name="optionsRadios" id="selectByClick" value="option1" checked>
+                            <input type="radio" name="optionsRadios" id="selectByClick" checked>
                              Select if you would like to pick places by clicking on the map.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="optionsRadios" id="selectBySearch" value="option2">
+                            <input type="radio" name="optionsRadios" id="selectBySearch">
                             Select if you would like to search places by their name
                         </label>
+                    </div>
+                    <div id="searchPlaces" class="hidden">
+                        <div>
+                            <label>Origin<input type="text" class="place-search-box" id="originPlace" value="My Location"></label>
+                        </div>
+                        <div>
+                            <label>Destination<input type="text" class="place-search-box" id="destinationPlace"></label>
+                        </div>
                     </div>
                     <hr>
                     <div class="action_btns clearfix">
@@ -80,12 +88,14 @@
                 </section>
             </div>
       </script>
+        <script type="text/javascript" src="js/vendor/ol.js" async></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-        <script type="text/javascript" src="js/vendor/ol.js"></script>
+        <script type="text/javascript" src="js/vendor/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
         <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
         <script type="text/javascript" src="js/model/UserModel.js"></script>
+        <script type="text/javascript" src="js/model/Location.js"></script>
         <script type="text/javascript" src="js/views/loginView.js"></script>
         <script type="text/javascript" src="js/views/directionView.js"></script>
         <script type="text/javascript" src="js/views/mapView.js"></script>
