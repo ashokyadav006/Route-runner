@@ -32,13 +32,12 @@ rr.DirectionView = Backbone.View.extend({
 	},
 
 	findDRoute: function () {
-		this.onModalClose();
-		if ($("#selectByClick").is(":selected")) {
+		if ($("#selectByClick").is(":checked")) {
 			this.map.findRouteOnClick();
 		} else {
 			this.map.findRouteOnSearch();
 		}
-		
+		this.onModalClose();
 	},
 
 	onOptionSelection: function (event) {

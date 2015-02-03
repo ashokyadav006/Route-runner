@@ -14,6 +14,10 @@ rr.MapView = Backbone.View.extend({
         this.login = new rr.LoginView();
         this.direction = new rr.DirectionView({"map": this});
         this.login.render();
+        this.startMarker = document.createElement("div");
+		this.startMarker.className = "marker";
+		this.endMarker = document.createElement("div");
+		this.endMarker.className = "marker";
         navigator.geolocation.getCurrentPosition(this.saveCurrentPosition);
 	},
 
@@ -51,16 +55,30 @@ rr.MapView = Backbone.View.extend({
     	map.on('click', this.getRoutePosition);
     },
 
+
     getRoutePosition: function (event) {
    		if (self.clickCounter === 0) {
    			rr.origin = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
+   			self.addMarkers(event.coordinate, self.startMarker);
    			self.clickCounter++;
    		} else {
    			self.clickCounter = 0;
-   			rr.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");;
+   			rr.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
+   			self.addMarkers(event.coordinate, self.endMarker);
    			map.un('click', self.getRoutePosition);
    			self.drawpath();
    		}
+    },
+
+    addMarkers: function (coordinates, marker) {
+    	var marker = new ol.Overlay({
+    		position: coordinates,
+    		positioning: 'center-center',
+    		element: marker,
+    		stopEvent: false
+    	});
+
+    	map.addOverlay(marker);
     },
 
     findRouteOnSearch: function () {
