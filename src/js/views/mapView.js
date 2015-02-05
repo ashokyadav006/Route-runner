@@ -30,7 +30,7 @@ rr.MapView = Backbone.View.extend({
 	},
 
 	render: function () {
-		map = new ol.Map({
+		this.map = new ol.Map({
 			target: 'map',
             renderer:'canvas',
 			layers: [
@@ -51,21 +51,34 @@ rr.MapView = Backbone.View.extend({
         });
     },
 
-    findRouteOnClick: function () {
-    	map.on('click', this.getRoutePosition);
+    addLongPressEvent: function () {
+      $("#map").on('mousedown', this.onMouseDown);
+      $("#map").on("mouseup", this.onMouseUp);
     },
 
+    onMouseDown: function (event) {
+      self.clickTime = new Date();
+    },
 
-    getRoutePosition: function (event) {
+    onMouseUp: function (event) {
+      if (new Date() - self.clickTime >= 1000) {
+          var coords = self.map.getCoordinateFromPixel([event.pageX,event.pageY]);
+          self.getRoutePosition(coords);
+      }
+    },
+
+    getRoutePosition: function (coordinate) {
    		if (self.clickCounter === 0) {
-   			rr.origin = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
-   			self.addMarkers(event.coordinate, self.startMarker);
+   			rr.origin = ol.proj.transform(coordinate, "EPSG:900913", "EPSG:4326");
+   			self.addMarkers(coordinate, self.startMarker);
    			self.clickCounter++;
    		} else {
    			self.clickCounter = 0;
-   			rr.destination = ol.proj.transform(event.coordinate, "EPSG:900913", "EPSG:4326");
-   			self.addMarkers(event.coordinate, self.endMarker);
-   			map.un('click', self.getRoutePosition);
+   			rr.destination = ol.proj.transform(coordinate, "EPSG:900913", "EPSG:4326");
+   			self.addMarkers(coordinate, self.endMarker);
+   			$("#map").off('mousedown', this.onMouseDown);
+        $("#map").off("mouseup", this.onMouseUp);
+        self.clickTime = 0;
    			self.drawpath();
    		}
     },
@@ -78,7 +91,7 @@ rr.MapView = Backbone.View.extend({
     		stopEvent: false
     	});
 
-    	map.addOverlay(marker);
+    	this.map.addOverlay(marker);
     },
 
     findRouteOnSearch: function () {
@@ -113,7 +126,7 @@ rr.MapView = Backbone.View.extend({
 				return styleCache[text];
     		}
     	});
-    	map.addLayer(geoLayer);
+    	this.map.addLayer(geoLayer);
     }
 });
 

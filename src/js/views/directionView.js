@@ -33,7 +33,7 @@ rr.DirectionView = Backbone.View.extend({
 
 	findDRoute: function () {
 		if ($("#selectByClick").is(":checked")) {
-			this.map.findRouteOnClick();
+			this.map.addLongPressEvent();
 		} else {
 			this.map.findRouteOnSearch();
 		}

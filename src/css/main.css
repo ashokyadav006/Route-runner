@@ -347,8 +347,15 @@ body {
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (min-width: 35em) {
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     /* Style adjustments for viewports that meet the condition */
+    #modal {
+        left:0;
+        top:20px;
+    }
+    .popupContainer{
+        width:100%;
+    }
 }
 
 @media print,
